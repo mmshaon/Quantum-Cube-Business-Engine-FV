@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QCBE MAX | COMMAND CENTER</title>
+    <title>QCBE MAX | NEURAL INTERFACE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
     <style>
         body { background: #02040a; color: white; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass { background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .neon-text { text-shadow: 0 0 15px rgba(0, 255, 163, 0.5); }
-        .input-field { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s; }
-        .input-field:focus { border-color: #00FFA3; outline: none; background: rgba(0, 255, 163, 0.05); }
-        .god-mode { background: radial-gradient(circle at top left, #1a0000 0%, #02040a 100%) !important; }
-        @keyframes pulse-slow { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
-        .pulse-bg { animation: pulse-slow 4s infinite; }
+        
+        /* Neural Waveform Animation */
+        .wave-container { display: flex; align-items: center; justify-content: center; gap: 4px; height: 60px; }
+        .bar { width: 3px; height: 10px; background: #00FFA3; border-radius: 50px; animation: wave 1s ease-in-out infinite; }
+        @keyframes wave {
+            0%, 100% { height: 10px; opacity: 0.3; }
+            50% { height: 50px; opacity: 1; box-shadow: 0 0 15px #00FFA3; }
+        }
+        .god-mode .bar { background: #ff0000; box-shadow: 0 0 15px #ff0000; }
+        .god-mode { background: radial-gradient(circle at bottom right, #200000 0%, #02040a 100%) !important; }
     </style>
 </head>
 <body class="h-screen w-screen flex transition-all duration-1000" id="master-bg">
@@ -27,120 +32,85 @@
         </button>
     </aside>
 
-    <main class="flex-1 p-10 flex flex-col relative overflow-hidden">
-        <div class="absolute inset-0 pulse-bg bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] pointer-events-none"></div>
-        
-        <header class="flex justify-between items-start mb-10 z-10">
+    <main class="flex-1 p-10 flex flex-col relative">
+        <header class="flex justify-between items-start mb-10">
             <div>
                 <h1 id="main-title" class="text-4xl font-black italic tracking-tighter text-white">QCBE<span class="text-[#00FFA3]">.MAX</span></h1>
-                <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-[0.4em]">Auth: Mohammad Maynul Hasan</p>
+                <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-[0.4em]">Neural Core: Yusra Engine 3.1</p>
             </div>
-            <div class="glass px-6 py-3 rounded-2xl border border-white/5 flex items-center gap-4">
-                <div class="text-right">
-                    <p class="text-[9px] text-gray-500 font-mono uppercase">System Latency</p>
-                    <p class="text-xs font-bold text-[#00FFA3]">0.002ms</p>
+            
+            <div class="glass px-8 py-4 rounded-3xl border border-white/5 flex items-center gap-6">
+                <div class="wave-container" id="visualizer">
+                    <div class="bar" style="animation-delay: 0.0s"></div>
+                    <div class="bar" style="animation-delay: 0.1s"></div>
+                    <div class="bar" style="animation-delay: 0.2s"></div>
+                    <div class="bar" style="animation-delay: 0.3s"></div>
+                    <div class="bar" style="animation-delay: 0.4s"></div>
+                    <div class="bar" style="animation-delay: 0.5s"></div>
                 </div>
-                <div class="w-[1px] h-6 bg-white/10"></div>
-                <div class="text-right">
-                    <p class="text-[9px] text-gray-500 font-mono uppercase">Nodes</p>
-                    <p class="text-xs font-bold text-white">128/128</p>
+                <div class="text-left">
+                    <p class="text-[9px] text-gray-500 font-mono uppercase">Voice Status</p>
+                    <p class="text-xs font-bold text-[#00FFA3]" id="voice-status">LISTENING</p>
                 </div>
             </div>
         </header>
 
-        <div class="grid grid-cols-12 gap-8 flex-1 z-10">
-            <div id="display-shield" class="col-span-8 glass rounded-[3rem] p-12 relative overflow-hidden flex flex-col">
-                <div id="inner-content" class="flex-1 flex flex-col justify-center">
-                    <h2 class="text-8xl font-black opacity-5 italic uppercase">Yusra</h2>
+        <div class="grid grid-cols-12 gap-8 flex-1">
+            <div id="display-shield" class="col-span-12 glass rounded-[3.5rem] p-16 flex flex-col justify-center items-center relative overflow-hidden group">
+                <div id="inner-content" class="text-center">
+                    <h2 class="text-8xl font-black opacity-5 italic uppercase tracking-tighter mb-4">Neural Link</h2>
+                    <p class="text-gray-600 tracking-[1em] text-[10px] uppercase">Maynul, I am ready for your instructions.</p>
                 </div>
-                
-                <div class="mt-auto pt-8 border-t border-white/5">
-                    <div class="flex items-center gap-4 font-mono text-xs">
-                        <span class="text-[#00FFA3]">maynul@qcbe:~$</span>
-                        <input type="text" id="cmd-line" placeholder="enter command..." class="bg-transparent border-none outline-none flex-1 text-gray-400 focus:text-white" onkeydown="handleCmd(event)">
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-span-4 flex flex-col gap-6">
-                <div class="glass rounded-[2.5rem] p-8 flex-1">
-                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                        <span class="w-2 h-2 bg-blue-500 rounded-full"></span> Data Injection Panel
-                    </h3>
-                    <div class="space-y-5">
-                        <div>
-                            <label class="text-[10px] text-gray-500 uppercase font-bold ml-2">Parameter Name</label>
-                            <input type="text" id="param-name" class="input-field w-full px-5 py-3 rounded-xl mt-1 text-sm text-white" placeholder="e.g. Q1_BUDGET">
-                        </div>
-                        <div>
-                            <label class="text-[10px] text-gray-500 uppercase font-bold ml-2">Value Matrix</label>
-                            <input type="text" id="param-value" class="input-field w-full px-5 py-3 rounded-xl mt-1 text-sm text-white" placeholder="0.00">
-                        </div>
-                        <button onclick="injectData()" class="w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-[#00FFA3] hover:text-black transition-all mt-4">Execute Injection</button>
-                    </div>
-                </div>
-                
-                <div class="glass rounded-[2.5rem] p-6 h-40 overflow-y-auto font-mono text-[9px] text-gray-500" id="sys-logs">
-                    [SYSTEM] Terminal Ready...<br>
-                    [SYSTEM] Awaiting input...
+                <div class="absolute bottom-12 w-1/2 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 flex items-center gap-4">
+                   <span class="text-[#00FFA3] font-mono text-xs">>>></span>
+                   <input type="text" id="cmd-line" placeholder="voice command bypass..." class="bg-transparent border-none outline-none flex-1 font-mono text-xs text-white" onkeydown="handleCmd(event)">
                 </div>
             </div>
+        </div>
+
+        <div id="toast" class="fixed bottom-10 right-10 glass px-6 py-4 rounded-2xl border-l-4 border-[#00FFA3] translate-x-[200%] transition-transform duration-500">
+            <p class="text-[10px] text-gray-400 uppercase font-bold">System Alert</p>
+            <p id="toast-msg" class="text-xs font-bold">Neural Sync Complete</p>
         </div>
     </main>
 
     <script>
         const modules = {
-            '5': { t: 'PROJECT STUDIO', d: 'Active Cubes: 12. Resource Distribution: Automated.', c: '#00FFA3' },
-            '7': { t: 'FINANCE HUB', d: 'Balance: $12,500.00. Verification: Level 5.', c: '#ffd700' },
-            '10': { t: 'EXECUTIVE INTEL', d: 'Projection: 92% ROI. Strategic Node: Active.', c: '#ff4444' },
-            '17': { t: 'REPORT ENGINE', d: 'Generating Real-time business analytics...', c: '#00d4ff' },
-            '21': { t: 'SYSTEM CONTROL', d: 'Security Protocol: AES-256. Access: Creator.', c: '#ffffff' }
+            '5': { t: 'PROJECT STUDIO', c: '#00FFA3' },
+            '7': { t: 'FINANCE HUB', c: '#ffd700' },
+            '10': { t: 'EXECUTIVE INTEL', c: '#ff4444' },
+            '13': { t: 'VOICE VISUALIZER', c: '#00FFA3' },
+            '23': { t: 'NEURAL WAVEFORM', c: '#a855f7' }
         };
-
-        function load(id) {
-            const m = modules[id];
-            const content = document.getElementById('inner-content');
-            content.innerHTML = `
-                <div class="animate-in fade-in slide-in-from-left-4 duration-500">
-                    <h2 class="text-6xl font-black italic tracking-tighter uppercase mb-4" style="color: ${m.c}">${m.t}</h2>
-                    <p class="text-xl text-gray-400 font-light max-w-xl">${m.d}</p>
-                </div>
-            `;
-            log(`Module ${id}.0 Activated.`);
-        }
-
-        function log(msg) {
-            const logs = document.getElementById('sys-logs');
-            logs.innerHTML += `<br><span class="text-[#00FFA3]">[OK]</span> ${msg}`;
-            logs.scrollTop = logs.scrollHeight;
-        }
-
-        function injectData() {
-            const name = document.getElementById('param-name').value;
-            const val = document.getElementById('param-value').value;
-            if(name && val) {
-                log(`Injected: ${name} = ${val}`);
-                document.getElementById('param-name').value = '';
-                document.getElementById('param-value').value = '';
-            }
-        }
 
         function handleCmd(e) {
             if(e.key === 'Enter') {
                 const cmd = e.target.value.toLowerCase();
-                log(`Executing command: ${cmd}`);
-                if(cmd === 'clear') document.getElementById('sys-logs').innerHTML = '[SYSTEM] Logs Cleared.';
+                notify(`Executing: ${cmd}`);
                 if(cmd === 'god') toggleGod();
                 e.target.value = '';
+                // Simulate voice wave reaction
+                const bars = document.querySelectorAll('.bar');
+                bars.forEach(b => b.style.animationDuration = '0.2s');
+                setTimeout(() => bars.forEach(b => b.style.animationDuration = '1s'), 2000);
             }
+        }
+
+        function notify(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.style.transform = 'translateX(0)';
+            setTimeout(() => toast.style.transform = 'translateX(200%)', 3000);
         }
 
         let isGod = false;
         function toggleGod() {
             isGod = !isGod;
             document.getElementById('master-bg').classList.toggle('god-mode');
-            document.getElementById('main-title').classList.toggle('text-red-600');
-            log(`God Mode ${isGod ? 'ENABLED' : 'DISABLED'}`);
+            document.getElementById('voice-status').innerText = isGod ? 'SUPREME_CTRL' : 'LISTENING';
+            document.getElementById('voice-status').style.color = isGod ? '#ff0000' : '#00FFA3';
+            notify(`God Mode ${isGod ? 'Active' : 'Deactivated'}`);
         }
 
         const nav = document.getElementById('nav-btns');
@@ -148,10 +118,12 @@
             const btn = document.createElement('button');
             btn.className = "w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center font-bold text-xs hover:bg-white/10 hover:border-[#00FFA3] transition-all";
             btn.innerText = k;
-            btn.onclick = () => load(k);
+            btn.onclick = () => {
+                document.getElementById('inner-content').innerHTML = `<h2 class="text-6xl font-black italic text-white uppercase">${modules[k].t}</h2>`;
+                notify(`Module ${k}.0 Online`);
+            };
             nav.appendChild(btn);
         });
-        load('5');
     </script>
 </body>
 </html>
