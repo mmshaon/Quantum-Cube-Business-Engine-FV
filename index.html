@@ -2,153 +2,164 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>QCBE MAX | EMPIRE OPERATIONAL</title>
+    <title>QCBE MAX | AUTONOMOUS FORCE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --neon-green: #00FFA3; --neon-blue: #00D1FF; --neon-gold: #FFD700; --bg: #010208; }
+        :root { --neon-green: #00FFA3; --neon-blue: #00D1FF; --neon-purple: #BD00FF; --bg: #010208; }
         body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
         .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.05); }
         
-        /* Tree System */
-        .sub-menu { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; margin-left: 24px; border-left: 1px solid rgba(255,255,255,0.05); }
-        .expanded { max-height: 500px !important; }
+        /* Tree System Improvements */
+        .sub-menu { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); margin-left: 24px; border-left: 1px solid rgba(255,255,255,0.05); }
+        .expanded { max-height: 800px !important; }
         
-        /* Data Card Styles */
-        .data-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; transition: 0.3s; }
-        .data-card:hover { border-color: var(--neon-green); box-shadow: 0 0 20px rgba(0, 255, 163, 0.1); }
+        /* Module Cards */
+        .bot-card { border: 1px solid rgba(0, 209, 255, 0.1); background: linear-gradient(180deg, rgba(0, 209, 255, 0.05) 0%, transparent 100%); border-radius: 24px; padding: 24px; transition: 0.3s; }
+        .bot-card:hover { border-color: var(--neon-blue); box-shadow: 0 0 30px rgba(0, 209, 255, 0.1); }
         
-        .ani-icon { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; text-shadow: 0 0 10px currentColor; } 100% { opacity: 0.6; } }
+        .pulse-icon { animation: neonPulse 2s infinite alternate; }
+        @keyframes neonPulse { from { opacity: 0.4; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); text-shadow: 0 0 15px currentColor; } }
         
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: var(--neon-green); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 10px; }
     </style>
 </head>
 <body class="flex h-screen p-6 gap-6">
 
     <aside class="w-80 glass rounded-[2.5rem] flex flex-col p-6 overflow-hidden">
-        <div class="mb-8 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-[var(--neon-green)]/10 flex items-center justify-center border border-[var(--neon-green)]/30">
-                <i class="fa-solid fa-cube text-[var(--neon-green)]"></i>
+        <div class="mb-10 px-2 flex items-center gap-3">
+            <div class="p-3 bg-[var(--neon-blue)]/10 rounded-xl border border-[var(--neon-blue)]/30">
+                <i class="fa-solid fa-microchip text-[var(--neon-blue)] pulse-icon"></i>
             </div>
             <div>
-                <h1 class="font-['Orbitron'] text-xl font-black">QCBE MAX</h1>
-                <p class="text-[8px] text-gray-500 uppercase tracking-widest">Imperial Control Unit</p>
+                <h1 class="font-['Orbitron'] text-xl font-black tracking-tighter">QCBE<span class="text-[var(--neon-blue)]">_FORCE</span></h1>
+                <p class="text-[8px] text-gray-500 uppercase tracking-widest">Autonomous Control</p>
             </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto" id="tree-container">
+        <div class="flex-1 overflow-y-auto space-y-2" id="tree-root">
             </div>
     </aside>
 
     <main class="flex-1 flex flex-col gap-6">
         <header class="h-20 glass rounded-3xl flex items-center justify-between px-10">
-            <div class="flex items-center gap-4">
-                <div class="w-2 h-2 bg-[var(--neon-green)] rounded-full animate-pulse"></div>
-                <span class="text-xs font-mono text-gray-400 italic" id="yusra-voice">Yusra: Ready for master's command.</span>
+            <div class="flex items-center gap-6">
+                <div class="flex flex-col">
+                    <span class="text-[9px] text-gray-500 uppercase font-black">Virtual CEO</span>
+                    <h2 class="text-xl font-['Orbitron'] font-black text-[var(--neon-blue)] italic">YUSRA</h2>
+                </div>
+                <div class="h-8 w-px bg-white/10"></div>
+                <p id="yusra-notif" class="text-xs italic text-gray-400">"Master Maynul, I am overseeing all autonomous bots."</p>
             </div>
-            <div class="flex gap-6">
-                <div class="text-right border-r border-white/10 pr-6">
-                    <p class="text-[8px] text-gray-500 uppercase">Current Liquidity</p>
-                    <p class="text-sm font-bold text-[var(--neon-gold)]">$452,000.00</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-[8px] text-gray-500 uppercase">Staff Count</p>
-                    <p class="text-sm font-bold text-[var(--neon-blue)]">128 Active</p>
-                </div>
+            <div class="flex gap-4">
+                <div class="px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-[10px] font-bold">NODE: DHAKA_ACTIVE</div>
+                <div class="px-4 py-2 bg-[var(--neon-green)]/10 rounded-xl border border-[var(--neon-green)]/30 text-[10px] font-bold text-[var(--neon-green)]">STATUS: OPTIMAL</div>
             </div>
         </header>
 
-        <div class="flex-1 glass rounded-[3.5rem] p-10 overflow-y-auto" id="main-content">
-            <div class="flex flex-col items-center justify-center h-full opacity-20">
-                <i class="fa-solid fa-brain text-8xl mb-6"></i>
-                <h2 class="font-['Orbitron'] text-3xl font-black">SELECT MODULE</h2>
-                <p class="text-xs uppercase tracking-[1em]">Neural Link Standby</p>
+        <div class="flex-1 glass rounded-[3.5rem] p-10 overflow-y-auto" id="display-area">
+            <div class="flex flex-col items-center justify-center h-full opacity-10">
+                <i class="fa-solid fa-network-wired text-9xl mb-6"></i>
+                <h2 class="font-['Orbitron'] text-2xl font-black">AWAITING_NEURAL_LINK</h2>
             </div>
         </div>
 
-        <footer class="h-16 glass rounded-2xl flex items-center px-8 gap-4">
-            <i class="fa-solid fa-terminal text-[var(--neon-green)] text-xs"></i>
-            <input type="text" class="bg-transparent border-none outline-none flex-1 text-sm font-mono text-gray-300" placeholder="Type module code or feature name...">
-            <span class="text-[9px] text-gray-600">OWNER: M. MAYNUL HASAN</span>
+        <footer class="h-20 glass rounded-3xl flex items-center px-10 gap-6">
+            <i class="fa-solid fa-terminal text-[var(--neon-blue)]"></i>
+            <input type="text" class="bg-transparent border-none outline-none flex-1 text-sm font-mono text-gray-400" placeholder="Execute global command (e.g. /deploy_all)...">
+            <div class="text-[9px] font-black text-gray-600 uppercase tracking-tighter">Powered by Quantum Cube Engine</div>
         </footer>
     </main>
 
     <script>
-        const modules = [
-            { id: 1, name: 'Admin Control', icon: 'fa-user-shield', color: '--neon-green', subs: ['Access Control', 'Server Audit', 'Encryption Keys'] },
-            { id: 2, name: 'HR Engine', icon: 'fa-users-gear', color: '--neon-blue', subs: ['Payroll System', 'Employee Records', 'Recruitment'] },
-            { id: 7, name: 'Finance Hub', icon: 'fa-vault', color: '--neon-gold', subs: ['Cash Flow', 'Ledger', 'Tax Management'] },
-            { id: 5, name: 'Project Studio', icon: 'fa-rocket', color: '--neon-green', subs: ['Task Master', 'Deadline Tracker', 'Resource Lab'] }
-        ];
+        const moduleMap = {
+            '12': { t: 'Marketing AI', i: 'fa-bullhorn', c: '--neon-purple', s: ['Campaign Master', 'Social Bot', 'SEO Optimizer'] },
+            '14': { t: 'Autonomous Bot', i: 'fa-robot', c: '--neon-blue', s: ['Worker Bot 01', 'Web Crawler', 'Security Bot'] },
+            '1': { t: 'Admin Panel', i: 'fa-user-shield', c: '--neon-green', s: ['Logs', 'Users'] },
+            '5': { t: 'Project Studio', i: 'fa-layer-group', c: '--neon-blue', s: ['Tasks', 'Timeline'] }
+        };
 
-        function renderTree() {
-            const container = document.getElementById('tree-container');
-            container.innerHTML = modules.map(m => `
-                <div class="mb-3">
-                    <div class="flex items-center gap-3 p-3 hover:bg-white/5 rounded-xl cursor-pointer" onclick="toggleSub(${m.id})">
-                        <i class="fa-solid ${m.icon} ani-icon text-xs" style="color: var(${m.color})"></i>
-                        <span class="text-xs font-semibold">${m.id}.0 ${m.name}</span>
-                        <i class="fa-solid fa-chevron-right ml-auto text-[8px] opacity-30" id="arrow-${m.id}"></i>
-                    </div>
-                    <div class="sub-menu" id="sub-${m.id}">
-                        ${m.subs.map(s => `<div class="p-2 pl-4 text-[10px] text-gray-500 hover:text-white cursor-pointer" onclick="loadFeature('${m.name}', '${s}')">• ${s}</div>`).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function toggleSub(id) {
-            document.querySelectorAll('.sub-menu').forEach(el => {
-                if(el.id !== `sub-${id}`) el.classList.remove('expanded');
-            });
-            const sub = document.getElementById(`sub-${id}`);
-            sub.classList.toggle('expanded');
-            document.getElementById('yusra-voice').innerText = `Yusra: Accessing Module ${id}.0 hierarchy...`;
-        }
-
-        function loadFeature(mod, feature) {
-            const content = document.getElementById('main-content');
-            document.getElementById('yusra-voice').innerText = `Yusra: Opening ${feature} under ${mod}...`;
-            
-            let html = `
-                <div class="flex justify-between items-center mb-10">
-                    <h2 class="font-['Orbitron'] text-2xl font-black italic uppercase">${mod} <span class="text-gray-500">/</span> ${feature}</h2>
-                    <button class="px-6 py-2 bg-[var(--neon-green)] text-black text-[10px] font-black rounded-lg">SAVE DATA</button>
-                </div>
-                <div class="grid grid-cols-2 gap-8">
-            `;
-
-            if(mod === 'HR Engine') {
-                html += `
-                    <div class="data-card p-8">
-                        <h4 class="text-xs font-bold text-gray-400 mb-6 uppercase">Active Employees</h4>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center border-b border-white/5 pb-2">
-                                <span>Employee Name</span><span class="text-[var(--neon-blue)]">Designation</span>
-                            </div>
-                            <div class="flex justify-between items-center text-xs"><span>Rahat Khan</span><span class="opacity-50">Lead Dev</span></div>
-                            <div class="flex justify-between items-center text-xs"><span>Sara Islam</span><span class="opacity-50">UX Design</span></div>
+        function initTree() {
+            const root = document.getElementById('tree-root');
+            for(let i=1; i<=24; i++) {
+                const data = moduleMap[i] || { t: `Module ${i}.0`, i: 'fa-box-open', c: '--neon-green', s: ['Feature Alpha', 'Feature Beta'] };
+                root.innerHTML += `
+                    <div class="group">
+                        <div class="flex items-center gap-3 p-3 hover:bg-white/5 rounded-2xl cursor-pointer transition-all" onclick="toggleNode(${i})">
+                            <i class="fa-solid ${data.i} text-[12px] group-hover:scale-110 transition-all" style="color: var(${data.c})"></i>
+                            <span class="text-xs font-bold tracking-tight text-gray-300">${i}.0 ${data.t}</span>
+                            <i class="fa-solid fa-caret-down ml-auto text-[10px] opacity-20" id="icon-${i}"></i>
+                        </div>
+                        <div class="sub-menu" id="node-${i}">
+                            ${data.s.map(sub => `
+                                <div class="py-2.5 px-4 text-[10px] text-gray-500 hover:text-[var(--neon-blue)] flex items-center gap-3 cursor-pointer" onclick="showFeature('${data.t}', '${sub}')">
+                                    <div class="w-1 h-1 rounded-full bg-current opacity-40"></div>
+                                    ${sub}
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
                 `;
-            } else if(mod === 'Finance Hub') {
-                html += `
-                    <div class="data-card p-8 border-l-4 border-[var(--neon-gold)]">
-                        <h4 class="text-xs font-bold text-gray-400 mb-6 uppercase">Financial Snapshot</h4>
-                        <p class="text-4xl font-black mb-2">$452,000.00</p>
-                        <p class="text-[10px] text-green-400 tracking-widest">↑ 12% PROFIT MARGIN</p>
-                    </div>
-                `;
             }
-
-            html += `</div>`;
-            content.innerHTML = html;
         }
 
-        renderTree();
+        function toggleNode(id) {
+            const node = document.getElementById(`node-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+            node.classList.toggle('expanded');
+            icon.style.transform = node.classList.contains('expanded') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function showFeature(mod, feature) {
+            const area = document.getElementById('display-area');
+            const notif = document.getElementById('yusra-notif');
+            notif.innerText = `"Master Maynul, ${feature} is now active within the ${mod} module."`;
+
+            let content = `
+                <div class="flex justify-between items-center mb-10 border-b border-white/5 pb-6">
+                    <div>
+                        <h2 class="font-['Orbitron'] text-3xl font-black uppercase italic">${feature}</h2>
+                        <p class="text-[10px] text-[var(--neon-blue)] font-bold mt-1 tracking-widest">${mod.toUpperCase()} / SYSTEM_ACTIVE</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <button class="px-6 py-2 border border-white/10 rounded-xl text-[10px] font-bold hover:bg-white/5">CONFIG</button>
+                        <button class="px-6 py-2 bg-[var(--neon-blue)] text-black text-[10px] font-black rounded-xl">EXECUTE</button>
+                    </div>
+                </div>
+            `;
+
+            if(mod === 'Autonomous Bot') {
+                content += `
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="bot-card">
+                            <div class="flex justify-between mb-6">
+                                <h4 class="text-xs font-black uppercase text-gray-400">Bot Efficiency</h4>
+                                <span class="text-[var(--neon-blue)] text-xs">98.2%</span>
+                            </div>
+                            <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                                <div class="h-full bg-[var(--neon-blue)] w-[98%] shadow-[0_0_15px_var(--neon-blue)]"></div>
+                            </div>
+                        </div>
+                        <div class="bot-card border-l-4 border-[var(--neon-green)]">
+                            <h4 class="text-xs font-black uppercase text-gray-400 mb-4">Task Queue</h4>
+                            <ul class="text-[10px] space-y-3 font-mono opacity-60">
+                                <li>> Scanning market nodes... DONE</li>
+                                <li>> Mirroring database... ACTIVE</li>
+                                <li>> Patching security... PENDING</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content += `<div class="p-20 text-center glass rounded-3xl border-dashed border-2 border-white/10 text-gray-600 italic">Module Data Streaming in progress...</div>`;
+            }
+
+            area.innerHTML = content;
+        }
+
+        initTree();
     </script>
 </body>
 </html>
