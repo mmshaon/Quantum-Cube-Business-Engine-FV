@@ -2,134 +2,153 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>QCBE MAX | PERMANENT CORE</title>
+    <title>QCBE MAX | THE SOVEREIGN CORE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --neon-green: #00FFA3; --neon-cyan: #00D1FF; --bg-dark: #01040a; }
+        :root { --neon-green: #00FFA3; --neon-cyan: #00D1FF; --neon-gold: #FFD700; --bg-dark: #01040a; }
         body { background: var(--bg-dark); color: white; font-family: 'Fira Code', monospace; overflow: hidden; height: 100vh; }
         .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .sub-tree { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; border-left: 1px dashed rgba(255,255,255,0.1); margin-left: 20px; }
+        .sub-tree { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; border-left: 1px dashed rgba(255,255,255,0.05); margin-left: 22px; }
         .expanded { max-height: 500px !important; }
-        .kanban-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 10px; margin-bottom: 8px; }
-        #modal-overlay { display: none; background: rgba(0, 0, 0, 0.85); z-index: 100; }
-        .chart-container { height: 200px; width: 100%; }
+        .crm-row { background: rgba(255,255,255,0.02); border-radius: 8px; padding: 10px; margin-bottom: 6px; border-left: 2px solid transparent; transition: 0.3s; }
+        .crm-row:hover { border-left-color: var(--neon-cyan); background: rgba(0, 209, 255, 0.05); }
+        .admin-badge { font-size: 8px; font-weight: 900; padding: 2px 6px; border-radius: 4px; background: var(--neon-gold); color: black; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 10px; }
     </style>
 </head>
 <body class="flex h-screen p-4 gap-4">
 
-    <aside class="w-80 glass rounded-[2rem] flex flex-col p-6 overflow-hidden">
-        <div class="mb-8">
-            <h1 class="font-['Orbitron'] text-xl font-black text-[var(--neon-cyan)]">QCBE_MAX</h1>
-            <p class="text-[8px] text-gray-500 uppercase tracking-widest">Permanent Structure v3.0</p>
+    <aside class="w-80 glass rounded-[2.5rem] flex flex-col p-6 overflow-hidden border-r border-white/5">
+        <div class="mb-10 px-2">
+            <h1 class="font-['Orbitron'] text-2xl font-black text-[var(--neon-cyan)] tracking-tighter">QCBE<span class="text-white">_MAX</span></h1>
+            <div class="flex items-center gap-2 mt-2">
+                <span class="admin-badge">MASTER_ADMIN</span>
+                <span class="text-[8px] text-gray-500 uppercase tracking-widest">v3.9 FINAL</span>
+            </div>
         </div>
         <nav class="flex-1 overflow-y-auto space-y-1" id="tree-nav"></nav>
     </aside>
 
     <main class="flex-1 flex flex-col gap-4">
-        <header class="h-20 glass rounded-[1.5rem] flex items-center justify-between px-8 border border-[var(--neon-cyan)]/20">
-            <div class="flex flex-col">
-                <span id="module-id" class="text-[9px] text-[var(--neon-cyan)] font-bold tracking-widest">MODULE_18.0</span>
-                <h2 id="module-name" class="text-xl font-['Orbitron'] font-black uppercase">DATA ANALYTICS HUB</h2>
+        <header class="h-20 glass rounded-[1.5rem] flex items-center justify-between px-8 border-b border-[var(--neon-cyan)]/10">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-[var(--neon-cyan)]/10 flex items-center justify-center border border-[var(--neon-cyan)]/30">
+                    <i class="fa-solid fa-crown text-[var(--neon-cyan)] text-xs"></i>
+                </div>
+                <div>
+                    <h2 id="view-title" class="text-lg font-['Orbitron'] font-black uppercase tracking-tight">Imperial Command</h2>
+                    <p class="text-[9px] text-gray-500 font-bold italic" id="yusra-status">Yusra: Neural link established with Master Maynul.</p>
+                </div>
             </div>
-            <div class="flex gap-3">
-                <button onclick="openModal()" class="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-[10px] font-bold hover:bg-[var(--neon-cyan)] hover:text-black transition-all">UPLOAD_DATA</button>
-                <button class="px-6 py-2 bg-[var(--neon-cyan)] text-black text-[10px] font-black rounded-lg shadow-[0_0_15px_var(--neon-cyan)]">EXECUTE_AI</button>
+            <div class="flex gap-4">
+                <div class="text-right border-r border-white/10 pr-6">
+                    <p class="text-[8px] text-gray-500 uppercase">System Integrity</p>
+                    <p class="text-xs font-bold text-[var(--neon-green)] tracking-widest">99.9% SECURE</p>
+                </div>
+                <button class="px-5 py-2 bg-white/5 border border-white/10 rounded-lg text-[9px] font-black uppercase tracking-widest">Global Lock</button>
             </div>
         </header>
 
         <div class="flex-1 grid grid-cols-12 gap-4 overflow-hidden">
             
-            <div class="col-span-3 glass rounded-[2rem] p-6 flex flex-col gap-4 overflow-hidden">
-                <h3 class="text-[10px] font-black text-gray-500 uppercase"><i class="fa-solid fa-list-check mr-2"></i> Task Flow</h3>
-                <div class="flex-1 overflow-y-auto" id="kanban-board">
-                    <div class="kanban-card text-[10px] border-l-2 border-[var(--neon-cyan)]">Integrating Excel Parser...</div>
-                    <div class="kanban-card text-[10px]">Updating Neural Weights...</div>
+            <div class="col-span-4 glass rounded-[2rem] p-6 flex flex-col overflow-hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-[10px] font-black text-gray-500 uppercase"><i class="fa-solid fa-address-book mr-2"></i> Client Ledger</h3>
+                    <button class="text-[9px] text-[var(--neon-cyan)] font-bold">ADD_CLIENT+</button>
+                </div>
+                <div class="flex-1 overflow-y-auto pr-2" id="crm-list">
+                    <div class="crm-row flex justify-between items-center">
+                        <div class="text-[10px]"><p class="font-bold">Global Tech Inc.</p><p class="opacity-50">Revenue: $1.2M</p></div>
+                        <span class="text-[8px] text-[var(--neon-green)] font-black italic">ACTIVE</span>
+                    </div>
+                    <div class="crm-row flex justify-between items-center">
+                        <div class="text-[10px]"><p class="font-bold">Maynul Vision Ltd.</p><p class="opacity-50">Revenue: $5.8M</p></div>
+                        <span class="text-[8px] text-[var(--neon-cyan)] font-black italic">PRIORITY</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-span-9 flex flex-col gap-4 overflow-hidden">
-                <div class="h-1/2 glass rounded-[2rem] p-8">
-                    <h3 class="text-[10px] font-black text-gray-500 uppercase mb-4"><i class="fa-solid fa-chart-line mr-2"></i> Performance Analytics</h3>
-                    <div class="chart-container">
-                        <canvas id="analyticsChart"></canvas>
+            <div class="col-span-8 flex flex-col gap-4 overflow-hidden">
+                <div class="h-2/3 glass rounded-[2.5rem] p-8 flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-[10px] font-black text-gray-500 uppercase"><i class="fa-solid fa-chart-area mr-2"></i> Performance Hub</h3>
+                        <div class="flex gap-2">
+                            <span class="w-2 h-2 rounded-full bg-[var(--neon-cyan)]"></span>
+                            <span class="w-2 h-2 rounded-full bg-[var(--neon-green)]"></span>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-h-0">
+                        <canvas id="masterChart"></canvas>
                     </div>
                 </div>
-                
-                <div class="flex-1 glass rounded-[2rem] p-6 relative overflow-hidden bg-black/40">
-                    <h3 class="text-[10px] font-black text-gray-500 uppercase mb-2">Global Node Matrix</h3>
-                    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(var(--neon-green) 1px, transparent 1px); background-size: 20px 20px;"></div>
-                    <div class="w-3 h-3 bg-[var(--neon-green)] rounded-full absolute top-1/2 left-1/3 animate-ping"></div>
-                    <p class="absolute bottom-6 left-8 text-[9px] text-gray-600 font-mono">NODE_LOC: DHAKA_HQ_S01</p>
+
+                <div class="flex-1 grid grid-cols-2 gap-4">
+                    <div class="glass rounded-3xl p-6 flex items-center justify-between">
+                        <div><p class="text-[8px] text-gray-500 uppercase">Admin Auth</p><p class="text-xs font-bold">BIO_KEY_RECOGNIZED</p></div>
+                        <i class="fa-solid fa-fingerprint text-xl text-[var(--neon-cyan)]"></i>
+                    </div>
+                    <div class="glass rounded-3xl p-6 flex items-center justify-between border-l-4 border-[var(--neon-gold)]">
+                        <div><p class="text-[8px] text-gray-500 uppercase">Active Sessions</p><p class="text-xs font-bold">12 Global Nodes</p></div>
+                        <i class="fa-solid fa-network-wired text-xl text-[var(--neon-gold)]"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <div id="modal-overlay" class="fixed inset-0 flex items-center justify-center">
-        <div class="glass p-8 rounded-[2.5rem] w-96 border border-[var(--neon-cyan)]">
-            <h3 class="font-['Orbitron'] text-sm font-black mb-6">INJECT SYSTEM DATA</h3>
-            <input type="file" id="dataInput" class="hidden" onchange="processFile()">
-            <label for="dataInput" class="w-full h-32 border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-[var(--neon-cyan)] transition-all">
-                <i class="fa-solid fa-cloud-arrow-up text-2xl mb-2 text-[var(--neon-cyan)]"></i>
-                <span class="text-[10px] text-gray-500">Drop Excel/JSON or Click to Upload</span>
-            </label>
-            <div class="mt-6 flex justify-end gap-4">
-                <button onclick="closeModal()" class="text-[10px] font-bold text-gray-600">CANCEL</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Permanent Tree Build
-        const modules = [
-            { id: 1, t: 'Admin Control', i: 'fa-user-shield', s: ['Security', 'Logs'] },
-            { id: 2, t: 'HR Engine', i: 'fa-users', s: ['Payroll', 'Staff'] },
-            { id: 5, t: 'Project Studio', i: 'fa-cubes', s: ['Kanban', 'Timeline'] },
-            { id: 18, t: 'Data Analytics', i: 'fa-chart-pie', s: ['Excel Import', 'AI Prediction'] },
-            { id: 20, t: 'Geo Matrix', i: 'fa-earth-asia', s: ['World Nodes', 'Latency'] }
+        const moduleMap = [
+            { id: 1, t: 'Master Admin', i: 'fa-user-secret', c: '--neon-gold', s: ['Permissions', 'Encryption', 'Logs'] },
+            { id: 3, t: 'CRM Core', i: 'fa-id-badge', c: '--neon-cyan', s: ['Clients', 'Pipeline', 'History'] },
+            { id: 5, t: 'Project Studio', i: 'fa-cubes', c: '--neon-green', s: ['Kanban', 'Timeline'] },
+            { id: 7, t: 'Finance Hub', i: 'fa-vault', c: '--neon-gold', s: ['Ledger', 'Cashflow'] },
+            { id: 18, t: 'Analytics', i: 'fa-chart-pie', c: '--neon-cyan', s: ['Predictions', 'Reports'] }
         ];
 
         function initTree() {
             const nav = document.getElementById('tree-nav');
             for(let i=1; i<=24; i++) {
-                const data = modules.find(m => m.id === i) || { id: i, t: `Module ${i}.0`, i: 'fa-box', s: ['Feature Alpha', 'Feature Beta'] };
+                const data = moduleMap.find(m => m.id === i) || { id: i, t: `Module ${i}.0`, i: 'fa-box', c: '--neon-cyan', s: ['Standard Node'] };
                 nav.innerHTML += `
-                    <div>
-                        <div class="flex items-center gap-3 p-3 hover:bg-white/5 rounded-xl cursor-pointer" onclick="toggleSub(${i})">
-                            <i class="fa-solid ${data.i} text-[10px] text-[var(--neon-cyan)]"></i>
-                            <span class="text-[11px] font-bold text-gray-400">${i}.0 ${data.t}</span>
+                    <div class="mb-1">
+                        <div class="flex items-center gap-3 p-2.5 hover:bg-white/5 rounded-xl cursor-pointer transition-all" onclick="toggleSub(${i})">
+                            <i class="fa-solid ${data.i} text-[10px]" style="color: var(${data.c})"></i>
+                            <span class="text-[11px] font-bold text-gray-400 group-hover:text-white">${i}.0 ${data.t}</span>
                         </div>
                         <div id="sub-${i}" class="sub-tree space-y-1">
-                            ${data.s.map(s => `<div class="p-2 text-[9px] text-gray-600 hover:text-white cursor-pointer">• ${s}</div>`).join('')}
+                            ${data.s.map(s => `<div class="p-2 text-[9px] text-gray-600 hover:text-white cursor-pointer" onclick="updateView('${data.t}', '${s}')">• ${s}</div>`).join('')}
                         </div>
                     </div>`;
             }
         }
 
         function toggleSub(id) { document.getElementById(`sub-${id}`).classList.toggle('expanded'); }
-        function openModal() { document.getElementById('modal-overlay').style.display = 'flex'; }
-        function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
+        
+        function updateView(mod, feat) {
+            document.getElementById('view-title').innerText = feat;
+            document.getElementById('yusra-status').innerText = `Yusra: Switched to ${mod} > ${feat} protocol.`;
+        }
 
-        // Chart Initialization
-        const ctx = document.getElementById('analyticsChart').getContext('2d');
+        // Final Chart
+        const ctx = document.getElementById('masterChart').getContext('2d');
         new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
                 datasets: [{
-                    label: 'Market Growth',
-                    data: [12, 19, 15, 25, 22, 30],
+                    label: 'Revenue Growth',
+                    data: [450, 620, 580, 890],
+                    backgroundColor: 'rgba(0, 209, 255, 0.4)',
                     borderColor: '#00D1FF',
-                    borderWidth: 2,
-                    tension: 0.4,
-                    fill: true,
-                    backgroundColor: 'rgba(0, 209, 255, 0.05)'
+                    borderWidth: 1,
+                    borderRadius: 5
                 }]
             },
-            options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#444' } } } }
+            options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#555', font: { size: 9 } } } } }
         });
 
         initTree();
