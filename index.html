@@ -3,68 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QCBE MAX ENGINE</title>
+    <title>QCBE MAX | EXECUTIVE TERMINAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #02040a; color: white; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
-        .active-glow { box-shadow: 0 0 20px rgba(0, 255, 163, 0.2); border-color: #00FFA3; }
-        .sidebar-btn { transition: all 0.3s; border: 1px solid rgba(255,255,255,0.05); }
-        .sidebar-btn:hover { background: #00FFA3; color: black; border-color: #00FFA3; }
+        body { background: #02040a; color: white; font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .neon-text { text-shadow: 0 0 15px rgba(0, 255, 163, 0.5); }
+        .neon-border { border-color: #00FFA3; box-shadow: 0 0 20px rgba(0, 255, 163, 0.1); }
+        .god-mode { background: radial-gradient(circle at center, #200000 0%, #02040a 100%) !important; }
+        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+        .scanline { width: 100%; height: 100px; background: linear-gradient(to bottom, transparent, rgba(0,255,163,0.05), transparent); animation: scanline 8s linear infinite; }
     </style>
 </head>
-<body class="h-screen w-screen flex">
+<body class="h-screen w-screen flex transition-all duration-1000" id="master-bg">
+    <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-20"><div class="scanline"></div></div>
 
-    <nav class="w-24 bg-black/80 border-r border-white/5 flex flex-col items-center py-10 gap-8">
-        <div class="text-[#00FFA3] font-black text-2xl tracking-tighter mb-4">QC</div>
-        <div class="flex flex-col gap-5">
-            <button onclick="load('5')" class="sidebar-btn w-14 h-14 rounded-2xl bg-white/5 font-black text-xs">5.0</button>
-            <button onclick="load('7')" class="sidebar-btn w-14 h-14 rounded-2xl bg-white/5 font-black text-xs">7.0</button>
-            <button onclick="load('10')" class="sidebar-btn w-14 h-14 rounded-2xl bg-white/5 font-black text-xs">10.0</button>
-            <button onclick="load('21')" class="sidebar-btn w-14 h-14 rounded-2xl bg-white/5 font-black text-xs">21.0</button>
-        </div>
-        <button onclick="location.reload()" class="mt-auto text-gray-600 hover:text-white text-xl">↻</button>
-    </nav>
-
-    <main class="flex-1 p-12 flex flex-col">
-        <header class="flex justify-between items-center mb-16">
-            <div>
-                <h1 class="text-4xl font-black italic tracking-tighter text-[#00FFA3]">QCBE OS : MAX</h1>
-                <p class="text-[10px] text-gray-500 uppercase tracking-[0.4em] mt-2 font-bold">Mohammod Maynul Hasan | Virtual CEO</p>
+    <aside class="w-24 glass border-r border-white/5 flex flex-col items-center py-10 gap-6 z-50">
+        <div class="text-[#00FFA3] font-bold text-2xl tracking-tighter mb-8 neon-text">QC</div>
+        <div class="flex flex-col gap-4" id="nav-btns">
             </div>
-            <div class="px-8 py-3 bg-white/5 border border-white/10 rounded-full text-[10px] font-mono text-[#00FFA3]">
-                SYSTEM_STABLE_V2.3
+        <button onclick="toggleGod()" class="mt-auto w-14 h-14 rounded-full border border-white/10 flex items-center justify-center hover:border-red-500 transition-all group" id="god-btn">
+            <span class="text-gray-600 group-hover:text-red-500 font-bold transition-colors">Ω</span>
+        </button>
+    </aside>
+
+    <main class="flex-1 p-12 flex flex-col relative">
+        <header class="flex justify-between items-end mb-12">
+            <div>
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="w-2 h-2 bg-[#00FFA3] rounded-full animate-ping"></span>
+                    <span class="text-[10px] font-bold tracking-[0.5em] text-gray-500 uppercase">System Authorization: Level 10</span>
+                </div>
+                <h1 id="main-title" class="text-5xl font-black italic tracking-tighter text-white">QCBE<span class="text-[#00FFA3]">.MAX</span></h1>
+                <p class="text-xs text-gray-400 mt-2 font-light">EXECUTIVE: <span class="text-white font-bold">MOHAMMAD MAYNUL HASAN</span></p>
+            </div>
+            <div id="module-tag" class="text-right">
+                <p class="text-[10px] text-gray-600 font-mono uppercase">Current Cluster</p>
+                <h3 class="text-xl font-bold text-[#00FFA3] font-mono" id="active-tag">IDLE_STATE</h3>
             </div>
         </header>
 
-        <div id="display" class="flex-1 bg-white/5 border border-white/5 rounded-[4rem] p-20 flex flex-col justify-center items-center relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-[#00FFA3]/5 to-transparent pointer-events-none"></div>
-            <h2 class="text-7xl font-black opacity-10 italic uppercase">Yusra Ready</h2>
-            <p class="text-gray-500 mt-6 tracking-[0.5em] text-xs font-bold">AWAITING EXECUTIVE COMMAND</p>
+        <div id="display-shield" class="flex-1 glass rounded-[4rem] p-16 flex flex-col justify-center items-center relative overflow-hidden group">
+            <div id="inner-content" class="w-full h-full flex flex-col justify-center items-center">
+                <h2 class="text-8xl font-black opacity-5 italic uppercase tracking-tighter">Yusra Core</h2>
+                <p class="text-gray-600 mt-6 tracking-[0.8em] text-[10px] font-bold animate-pulse">AWAITING ENCRYPTION KEY...</p>
+            </div>
         </div>
     </main>
 
     <script>
-        const data = {
-            '5': { t: '5.0 PROJECT STUDIO', d: 'Managing 12 high-performance cubes. All resources synchronized.', c: '#00FFA3' },
-            '7': { t: '7.0 FINANCE HUB', d: 'Current Balance: $12,500.00. Global transactions validated.', c: '#ffd700' },
-            '10': { t: '10.0 EXECUTIVE INTEL', d: 'God Mode Active. System projecting 92% ROI for current strategy.', c: '#ff4444' },
-            '21': { t: '21.0 SYSTEM CONTROL', d: 'AES-256 Encryption active. Security protocols at maximum level.', c: '#ffffff' }
+        const modules = {
+            '5': { t: 'PROJECT STUDIO', d: 'Managing 12 active cubes. Quantum resource allocation optimized at 94%. All background processes stable.', c: '#00FFA3' },
+            '7': { t: 'FINANCE HUB', d: 'Total Liquidity: $12,500.00. Smart contracts executing via Module 7.4. Next audit in 4h.', c: '#ffd700' },
+            '10': { t: 'EXECUTIVE INTEL', d: 'Cross-cube analysis identifies 3 expansion nodes in SE Asia. ROI projection: 92% over 18 months.', c: '#ff4444' },
+            '17': { t: 'REPORTING ENGINE', d: 'Auto-generating Monthly Executive Summary. Cloud sync with Module 15.0 Global Core complete.', c: '#00d4ff' },
+            '21': { t: 'SYSTEM CONTROL', d: 'Biometric locks active. UI latency: 2ms. All creator privileges verified for Mohammad Maynul Hasan.', c: '#ffffff' }
         };
 
         function load(id) {
-            const m = data[id];
-            const div = document.getElementById('display');
-            div.innerHTML = `
-                <div class="w-full text-left animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <h2 class="text-6xl font-black mb-8 italic" style="color: ${m.c}">${m.t}</h2>
-                    <p class="text-2xl text-white/70 max-w-3xl leading-relaxed">${m.d}</p>
-                    <div class="mt-12 flex gap-5">
-                        <button class="px-10 py-4 font-black text-xs uppercase rounded-2xl" style="background-color: ${m.c}; color: black">Execute Command</button>
-                        <button class="px-10 py-4 font-black text-xs uppercase rounded-2xl border border-white/10 text-white">View Full Report</button>
+            const m = modules[id];
+            document.getElementById('active-tag').innerText = `MOD_${id}.0`;
+            document.getElementById('active-tag').style.color = m.c;
+            
+            const shield = document.getElementById('display-shield');
+            shield.style.borderColor = `${m.c}33`; // Add transparency to hex
+            
+            document.getElementById('inner-content').innerHTML = `
+                <div class="w-full text-left animate-in fade-in slide-in-from-bottom-8 duration-700">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="h-[2px] w-12" style="background: ${m.c}"></div>
+                        <span class="text-xs font-bold tracking-widest opacity-50 uppercase" style="color: ${m.c}">Module Data Active</span>
+                    </div>
+                    <h2 class="text-7xl font-black mb-8 italic tracking-tighter text-white uppercase">${m.t}</h2>
+                    <p class="text-2xl text-gray-400 max-w-4xl leading-relaxed font-light">${m.d}</p>
+                    <div class="mt-16 flex gap-6">
+                        <button onclick="alert('Executing ${m.t}...')" class="px-12 py-5 font-black text-[10px] uppercase rounded-2xl transition-all hover:scale-105 active:scale-95" style="background-color: ${m.c}; color: black; box-shadow: 0 10px 30px ${m.c}44">Execute Task</button>
+                        <button class="px-12 py-5 font-black text-[10px] uppercase rounded-2xl border border-white/10 text-white hover:bg-white/5 transition-all">Download Report</button>
                     </div>
                 </div>
             `;
         }
+
+        let isGod = false;
+        function toggleGod() {
+            isGod = !isGod;
+            const bg = document.getElementById('master-bg');
+            const title = document.getElementById('main-title');
+            if(isGod) {
+                bg.classList.add('god-mode');
+                title.classList.add('text-red-600');
+                document.getElementById('god-btn').style.borderColor = '#ff0000';
+            } else {
+                bg.classList.remove('god-mode');
+                title.classList.remove('text-red-600');
+                document.getElementById('god-btn').style.borderColor = 'rgba(255,255,255,0.1)';
+            }
+        }
+
+        const nav = document.getElementById('nav-btns');
+        Object.keys(modules).forEach(k => {
+            const btn = document.createElement('button');
+            btn.className = "w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center font-bold text-xs hover:bg-white/10 hover:border-[#00FFA3] transition-all";
+            btn.innerText = k;
+            btn.onclick = () => load(k);
+            nav.appendChild(btn);
+        });
     </script>
 </body>
 </html>
