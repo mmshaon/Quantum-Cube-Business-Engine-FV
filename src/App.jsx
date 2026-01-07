@@ -1,85 +1,59 @@
 import React, { useState } from 'react';
 
-// Simplified All-in-One Modules
-const ProjectModule = () => <div style={{padding: '20px', border: '1px solid #00FFA3', borderRadius: '15px'}}><h3>5.0 Project Studio</h3><p>Status: All Cubes Active</p></div>;
-const StrategyModule = () => <div style={{padding: '20px', border: '1px solid #ff00ff', borderRadius: '15px'}}><h3>6.0 Strategy Engine</h3><p>Analysis: 92% Market Potential</p></div>;
-const FinanceModule = () => <div style={{padding: '20px', border: '1px solid #ffd700', borderRadius: '15px'}}><h3>7.0 Finance Hub</h3><p>Balance: $12,500.00</p></div>;
-const AutomationModule = () => <div style={{padding: '20px', border: '1px solid #00d4ff', borderRadius: '15px'}}><h3>9.0 Automation</h3><p>Tasks Running: 14</p></div>;
-const IntelligenceModule = () => <div style={{padding: '20px', border: '2px solid red', borderRadius: '15px'}}><h3>10.0 Executive Intel</h3><p>God Mode: Enabled</p></div>;
+const Box = ({ title, color, desc }) => (
+  <div style={{ padding: '30px', border: `2px solid ${color}`, borderRadius: '20px', background: 'rgba(255,255,255,0.05)', marginTop: '20px' }}>
+    <h2 style={{ color: color, margin: '0 0 10px 0' }}>{title}</h2>
+    <p style={{ opacity: 0.7 }}>{desc}</p>
+  </div>
+);
 
 export default function App() {
   const [active, setActive] = useState('MAIN');
   const [god, setGod] = useState(false);
 
-  const modules = [
-    {id: '5.0', name: 'Project'},
-    {id: '6.0', name: 'Strategy'},
-    {id: '7.0', name: 'Finance'},
-    {id: '9.0', name: 'Automation'},
-    {id: '10.0', name: 'Intel'}
-  ];
-
   return (
-    <div style={{ 
-      backgroundColor: god ? '#1a0000' : '#02040a', 
-      color: 'white', 
-      minHeight: '100vh', 
-      display: 'flex',
-      fontFamily: 'sans-serif' 
-    }}>
-      {/* SIDEBAR */}
-      <div style={{ width: '100px', borderRight: '1px solid #333', padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <h2 style={{fontSize: '14px', color: '#00FFA3'}}>QCBE</h2>
-        {modules.map(m => (
-          <button 
-            key={m.id} 
-            onClick={() => setActive(m.id)}
-            style={{
-              padding: '10px 5px',
-              backgroundColor: active === m.id ? '#00FFA3' : '#222',
-              color: active === m.id ? 'black' : 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '10px',
-              fontWeight: 'bold'
-            }}
-          >
-            {m.id}
-          </button>
+    <div style={{ display: 'flex', minHeight: '100vh', background: god ? '#1a0000' : '#02040a', fontFamily: 'sans-serif', color: 'white' }}>
+      
+      {/* SIDEBAR NAVIGATION */}
+      <div style={{ width: '80px', borderRight: '1px solid #333', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 0', gap: '15px' }}>
+        <div style={{ color: '#00FFA3', fontWeight: 'bold', marginBottom: '20px' }}>QCBE</div>
+        {['5', '6', '7', '9', '10', '15', '21'].map(num => (
+          <button key={num} onClick={() => setActive(num)} style={{
+            width: '45px', height: '45px', borderRadius: '12px', cursor: 'pointer', border: 'none',
+            background: active === num ? '#00FFA3' : '#222',
+            color: active === num ? 'black' : 'white',
+            fontWeight: 'bold'
+          }}>{num}</button>
         ))}
-        <button 
-          onClick={() => setGod(!god)}
-          style={{ marginTop: 'auto', padding: '10px', backgroundColor: god ? 'red' : '#444', border: 'none', borderRadius: '50%', color: 'white', cursor: 'pointer' }}
-        >
-          {god ? 'GOD' : 'OFF'}
-        </button>
+        <button onClick={() => setGod(!god)} style={{ marginTop: 'auto', padding: '10px', borderRadius: '50%', background: god ? 'red' : '#333', border: 'none', color: 'white', cursor: 'pointer', fontWeight: 'bold' }}>G</button>
       </div>
 
       {/* CONTENT AREA */}
       <div style={{ flex: 1, padding: '40px' }}>
-        <div style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ borderBottom: '1px solid #333', paddingBottom: '20px', marginBottom: '30px', display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <h1 style={{ margin: 0, letterSpacing: '-1px' }}>SYSTEM <span style={{color: '#00FFA3'}}>MAX</span></h1>
-            <p style={{fontSize: '10px', opacity: 0.5}}>CREATOR: MOHAMMAD MAYNUL HASAN</p>
+            <h1 style={{ margin: 0, color: god ? 'red' : '#00FFA3' }}>QCBE MAX SYSTEM</h1>
+            <p style={{ margin: 0, fontSize: '12px', opacity: 0.5 }}>CREATOR: MOHAMMAD MAYNUL HASAN</p>
           </div>
-          <div style={{fontSize: '12px', background: '#222', padding: '5px 15px', borderRadius: '20px', border: '1px solid #333'}}>
-            LIVE_STATUS: <span style={{color: '#00FFA3'}}>READY</span>
+          <div style={{ padding: '10px 20px', background: '#111', borderRadius: '30px', border: '1px solid #333', fontSize: '12px' }}>
+            STATUS: <span style={{ color: '#00FFA3' }}>SYSTEM_ACTIVE</span>
           </div>
         </div>
 
-        <div style={{ backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '30px', padding: '30px', minHeight: '300px' }}>
-          {active === '5.0' && <ProjectModule />}
-          {active === '6.0' && <StrategyModule />}
-          {active === '7.0' && <FinanceModule />}
-          {active === '9.0' && <AutomationModule />}
-          {active === '10.0' && <IntelligenceModule />}
+        <div style={{ minHeight: '400px' }}>
           {active === 'MAIN' && (
-            <div style={{textAlign: 'center', paddingTop: '50px'}}>
-              <h2 style={{opacity: 0.2, fontSize: '40px'}}>YUSRA CORE ACTIVE</h2>
-              <p>Select a Module from Sidebar to Begin</p>
+            <div style={{ textAlign: 'center', marginTop: '100px' }}>
+              <h2 style={{ fontSize: '40px', opacity: 0.2 }}>YUSRA FV ACTIVE</h2>
+              <p>Select a Module from the sidebar to begin execution.</p>
             </div>
           )}
+          {active === '5' && <Box title="5.0 Project Studio" color="#00FFA3" desc="Managing 12 active cubes. All systems operational." />}
+          {active === '6' && <Box title="6.0 Strategy Engine" color="#ff00ff" desc="Market analysis complete. 92% ROI projection generated." />}
+          {active === '7' && <Box title="7.0 Finance Hub" color="#ffd700" desc="Total Balance: $12,500.00 | Net Growth: +14%." />}
+          {active === '9' && <Box title="9.0 Automation Engine" color="#00d4ff" desc="14 Background tasks are running autonomously." />}
+          {active === '10' && <Box title="10.0 Executive Intel" color="red" desc="High-level decision mode active. Reporting to Creator." />}
+          {active === '15' && <Box title="15.0 Global Core" color="#ff8c00" desc="Nodes active in 2 regions. Global sync enabled." />}
+          {active === '21' && <Box title="21.0 System Control" color="#ffffff" desc="Configure module visibility and security protocols." />}
         </div>
       </div>
     </div>
