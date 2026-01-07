@@ -1,0 +1,8 @@
+{
+  "name": "Quantum Cube Business Engine",
+  "description": "A high-fidelity business intelligence engine with quantum-inspired UI, multi-language support (English, Bangla, Arabic), and AI-driven predictive insights.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
