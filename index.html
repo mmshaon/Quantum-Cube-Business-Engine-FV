@@ -2,146 +2,160 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>QCBE MAX | THE ARCHITECT</title>
+    <title>QCBE MAX | INTERACTIVE SOVEREIGN</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --neon-green: #00FFA3; --neon-cyan: #00D1FF; --neon-purple: #BD00FF; --bg-dark: #020617; }
+        :root { --neon-green: #00FFA3; --neon-cyan: #00D1FF; --neon-purple: #BD00FF; --bg-dark: #01040a; }
         body { background: var(--bg-dark); color: white; font-family: 'Fira Code', monospace; overflow: hidden; height: 100vh; }
         
-        .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .neon-glow { text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan); }
+        .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .neon-border { border: 1px solid var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 209, 255, 0.2); }
         
-        /* Collapsable Tree Styling */
-        .tree-node { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .sub-tree { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; padding-left: 20px; border-left: 1px dashed rgba(255,255,255,0.1); }
+        /* Kanban Task Entry Animation */
+        .kanban-card { transition: transform 0.2s; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        /* Modal Overlay */
+        #modal-overlay { display: none; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); }
+        
+        /* Sub-tree animation */
+        .sub-tree { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
         .expanded { max-height: 500px !important; }
-
-        /* Kanban Visuals */
-        .kanban-col { background: rgba(255, 255, 255, 0.02); border-radius: 20px; padding: 15px; min-height: 300px; }
-        .kanban-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 12px; margin-bottom: 10px; cursor: grab; }
-
-        /* Map Pulse */
-        .dot { height: 8px; width: 8px; background-color: var(--neon-green); border-radius: 50%; display: inline-block; position: absolute; box-shadow: 0 0 10px var(--neon-green); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.7; } 70% { transform: scale(2); opacity: 0; } 100% { transform: scale(0.9); opacity: 0; } }
     </style>
 </head>
 <body class="flex h-screen p-4 gap-4">
 
-    <aside class="w-80 glass rounded-[2rem] flex flex-col p-6 overflow-hidden">
-        <div class="mb-10 text-center">
-            <h1 class="font-['Orbitron'] text-xl font-black text-[var(--neon-cyan)] neon-glow">QCBE_ULTIMATE</h1>
-            <p class="text-[8px] tracking-[0.4em] text-gray-500 uppercase mt-2">M. Maynul Hasan's Empire</p>
+    <aside class="w-80 glass rounded-[2rem] flex flex-col p-6 overflow-hidden border-r border-white/5">
+        <div class="mb-10 flex items-center gap-3">
+            <div class="w-2 h-8 bg-[var(--neon-cyan)] rounded-full"></div>
+            <div>
+                <h1 class="font-['Orbitron'] text-xl font-black">QCBE<span class="text-[var(--neon-cyan)]">_MAX</span></h1>
+                <p class="text-[8px] text-gray-500 tracking-widest">MASTER SYSTEM 2.0</p>
+            </div>
         </div>
 
-        <nav class="flex-1 overflow-y-auto space-y-2 pr-2" id="tree-nav">
-            </nav>
+        <nav class="flex-1 overflow-y-auto space-y-1" id="tree-nav"></nav>
     </aside>
 
     <main class="flex-1 flex flex-col gap-4">
-        <header class="h-20 glass rounded-[1.5rem] flex items-center justify-between px-8 neon-border">
+        <header class="h-20 glass rounded-[1.5rem] flex items-center justify-between px-8">
             <div class="flex flex-col">
-                <span id="module-id-label" class="text-[9px] text-[var(--neon-cyan)] font-bold">MODULE_5.0</span>
-                <h2 id="module-title-label" class="text-xl font-['Orbitron'] font-black uppercase tracking-tight">PROJECT STUDIO</h2>
+                <span id="module-path" class="text-[9px] text-[var(--neon-cyan)] font-bold">5.0 / PROJECT_STUDIO</span>
+                <h2 id="module-title" class="text-xl font-['Orbitron'] font-black uppercase">Project Master View</h2>
             </div>
-            <div class="flex items-center gap-6">
-                <div class="text-right">
-                    <p class="text-[8px] text-gray-500 uppercase">Yusra Neural Link</p>
-                    <p class="text-[10px] text-[var(--neon-green)] animate-pulse">● SYNCHRONIZED</p>
-                </div>
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[var(--neon-cyan)] to-[var(--neon-purple)] p-0.5">
-                    <div class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center">
-                        <i class="fa-solid fa-user-tie text-[12px]"></i>
-                    </div>
-                </div>
-            </div>
+            <button onclick="openModal()" class="px-6 py-2 bg-[var(--neon-cyan)] text-black text-[10px] font-black rounded-lg hover:shadow-[0_0_20px_var(--neon-cyan)] transition-all">
+                <i class="fa-solid fa-plus mr-2"></i> NEW INSTRUCTION
+            </button>
         </header>
 
-        <div class="flex-1 glass rounded-[2.5rem] p-8 overflow-y-auto" id="workspace">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
-                <div class="flex flex-col gap-4">
-                    <h3 class="text-xs font-bold text-gray-400 flex items-center gap-2">
-                        <i class="fa-solid fa-table-columns text-[var(--neon-cyan)]"></i> KANBAN MASTER
-                    </h3>
-                    <div class="flex gap-4 h-full">
-                        <div class="kanban-col flex-1">
-                            <p class="text-[10px] font-black text-gray-600 mb-4">IN_PROGRESS</p>
-                            <div class="kanban-card">UI Optimization</div>
-                            <div class="kanban-card">Neural Link Fix</div>
-                        </div>
-                        <div class="kanban-col flex-1">
-                            <p class="text-[10px] font-black text-gray-600 mb-4">DONE</p>
-                            <div class="kanban-card">Database Mirror</div>
-                        </div>
+        <div class="flex-1 glass rounded-[2.5rem] p-8 overflow-hidden flex gap-6">
+            
+            <div class="flex-1 flex flex-col gap-4">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest"><i class="fa-solid fa-layer-group mr-2"></i> Neural Task Flow</h3>
+                <div class="flex-1 grid grid-cols-2 gap-4 overflow-y-auto" id="kanban-board">
+                    <div class="bg-white/5 border border-white/10 p-4 rounded-2xl kanban-card">
+                        <p class="text-[8px] text-[var(--neon-cyan)] font-bold mb-1">TASK_001</p>
+                        <p class="text-xs">Establish Global Ledger Sync</p>
                     </div>
                 </div>
+            </div>
 
-                <div class="flex flex-col gap-4">
-                    <h3 class="text-xs font-bold text-gray-400 flex items-center gap-2">
-                        <i class="fa-solid fa-globe text-[var(--neon-green)]"></i> GEO_MATRIX SYNC
-                    </h3>
-                    <div class="flex-1 bg-black/40 rounded-3xl relative border border-white/5 overflow-hidden">
-                        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(var(--neon-green) 1px, transparent 1px); background-size: 20px 20px;"></div>
-                        <div class="dot" style="top: 30%; left: 70%;"></div>
-                        <div class="dot" style="top: 50%; left: 40%;"></div>
-                        <div class="absolute bottom-4 left-6 text-[10px] font-mono text-gray-500">DHAKA_NODE: CONNECTED</div>
+            <div class="w-1/3 glass rounded-3xl p-6 border-l border-white/5 relative overflow-hidden bg-black/20">
+                <h3 class="text-xs font-bold text-gray-500 mb-6 uppercase"><i class="fa-solid fa-satellite-dish mr-2"></i> Node Status</h3>
+                <div class="space-y-4" id="node-stats">
+                    <div class="flex justify-between items-center text-[10px] border-b border-white/5 pb-2">
+                        <span>DHAKA_CORE</span><span class="text-[var(--neon-green)]">ONLINE</span>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] border-b border-white/5 pb-2">
+                        <span>SINGAPORE_NODE</span><span class="text-[var(--neon-cyan)]">SYNCING</span>
                     </div>
                 </div>
+                <div class="absolute bottom-0 left-0 w-full h-1/2 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
             </div>
         </div>
     </main>
 
+    <div id="modal-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-6">
+        <div class="glass w-full max-w-md p-8 rounded-[2rem] border border-[var(--neon-cyan)] shadow-2xl">
+            <h3 class="font-['Orbitron'] text-lg font-black mb-6 text-[var(--neon-cyan)]">NEW SYSTEM INSTRUCTION</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] text-gray-400 block mb-2">INSTRUCTION TITLE</label>
+                    <input type="text" id="task-title" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-[var(--neon-cyan)]">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-400 block mb-2">PRIORITY LEVEL</label>
+                    <select id="task-priority" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-[var(--neon-cyan)] appearance-none">
+                        <option>LOW_LATENCY</option>
+                        <option>CORE_CRITICAL</option>
+                        <option>GLOBAL_SYNC</option>
+                    </select>
+                </div>
+                <div class="flex gap-4 mt-8">
+                    <button onclick="closeModal()" class="flex-1 py-3 text-[10px] font-bold text-gray-500">ABORT</button>
+                    <button onclick="addTask()" class="flex-1 py-3 bg-[var(--neon-cyan)] text-black text-[10px] font-black rounded-xl">EXECUTE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const moduleData = [
-            { id: 1, t: 'Admin Panel', i: 'fa-shield-halved', s: ['Access Control', 'Log Master'] },
-            { id: 2, t: 'HR Engine', i: 'fa-users', s: ['Payroll', 'Attendance'] },
-            { id: 3, t: 'CRM Core', i: 'fa-address-card', s: ['Leads', 'Analytics'] },
-            { id: 5, t: 'Project Studio', i: 'fa-cubes', s: ['Kanban Board', 'Timeline'] },
-            { id: 7, t: 'Finance Hub', i: 'fa-vault', s: ['Ledger', 'Taxation'] },
-            { id: 12, t: 'Marketing AI', i: 'fa-bullhorn', s: ['Campaigns', 'Social Bot'] },
-            { id: 20, t: 'Geo Matrix', i: 'fa-map-location-dot', s: ['World Nodes', 'Traffic'] }
-            // All 24 would be here...
+            { id: 1, t: 'Admin Panel', i: 'fa-shield-halved', s: ['Access Control', 'System Logs'] },
+            { id: 5, t: 'Project Studio', i: 'fa-cubes', s: ['Kanban Board', 'Timeline Map'] },
+            { id: 7, t: 'Finance Hub', i: 'fa-vault', s: ['Ledger', 'Tax Audit'] },
+            { id: 12, t: 'Marketing AI', i: 'fa-bullhorn', s: ['Ad Engine', 'Social Bot'] },
+            { id: 20, t: 'Geo Matrix', i: 'fa-map-location-dot', s: ['Live Nodes', 'Regional Mirror'] }
         ];
 
-        function buildNav() {
+        function initTree() {
             const nav = document.getElementById('tree-nav');
             for(let i=1; i<=24; i++) {
-                const data = moduleData.find(m => m.id === i) || { id: i, t: `Module ${i}.0`, i: 'fa-box-open', s: ['Feature A', 'Feature B'] };
-                const html = `
-                    <div class="tree-node group">
-                        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer" onclick="toggleNode(${i})">
-                            <i class="fa-solid ${data.i} text-[var(--neon-cyan)] text-xs"></i>
-                            <span class="text-[11px] font-bold text-gray-400 group-hover:text-white">${i}.0 ${data.t}</span>
-                            <i class="fa-solid fa-chevron-right ml-auto text-[8px] opacity-20" id="arrow-${i}"></i>
+                const data = moduleData.find(m => m.id === i) || { id: i, t: `Module ${i}.0`, i: 'fa-box-open', s: ['Sub-feature 01', 'Sub-feature 02'] };
+                nav.innerHTML += `
+                    <div class="mb-1">
+                        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer transition-all" onclick="toggleSub(${i})">
+                            <i class="fa-solid ${data.i} text-[var(--neon-cyan)] text-[10px]"></i>
+                            <span class="text-[11px] font-bold text-gray-400">${i}.0 ${data.t}</span>
                         </div>
-                        <div class="sub-tree" id="sub-${i}">
-                            ${data.s.map(sub => `
-                                <div class="py-2 text-[9px] text-gray-500 hover:text-[var(--neon-green)] cursor-pointer" onclick="updateView(${i}, '${data.t}', '${sub}')">
-                                    <i class="fa-solid fa-minus mr-2 opacity-30"></i> ${sub}
-                                </div>
-                            `).join('')}
+                        <div id="sub-${i}" class="sub-tree space-y-1 ml-4">
+                            ${data.s.map(s => `<div class="p-2 text-[9px] text-gray-600 hover:text-[var(--neon-green)] cursor-pointer" onclick="updateView('${data.t}', '${s}')">/ ${s}</div>`).join('')}
                         </div>
                     </div>
                 `;
-                nav.insertAdjacentHTML('beforeend', html);
             }
         }
 
-        function toggleNode(id) {
-            const el = document.getElementById(`sub-${id}`);
-            const arrow = document.getElementById(`arrow-${id}`);
-            el.classList.toggle('expanded');
-            arrow.style.transform = el.classList.contains('expanded') ? 'rotate(90deg)' : 'rotate(0deg)';
+        function toggleSub(id) {
+            document.querySelectorAll('.sub-tree').forEach(el => { if(el.id !== `sub-${id}`) el.classList.remove('expanded'); });
+            document.getElementById(`sub-${id}`).classList.toggle('expanded');
         }
 
-        function updateView(id, title, sub) {
-            document.getElementById('module-id-label').innerText = `MODULE_${id}.0 / ${sub.toUpperCase()}`;
-            document.getElementById('module-title-label').innerText = title;
+        function updateView(mod, feature) {
+            document.getElementById('module-title').innerText = feature;
+            document.getElementById('module-path').innerText = mod.toUpperCase();
         }
 
-        buildNav();
+        function openModal() { document.getElementById('modal-overlay').style.display = 'flex'; }
+        function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
+
+        function addTask() {
+            const title = document.getElementById('task-title').value;
+            const priority = document.getElementById('task-priority').value;
+            if(!title) return alert("Please enter instruction title");
+
+            const board = document.getElementById('kanban-board');
+            const card = document.createElement('div');
+            card.className = "bg-white/5 border border-[var(--neon-cyan)]/30 p-4 rounded-2xl kanban-card";
+            card.innerHTML = `<p class="text-[8px] text-[var(--neon-cyan)] font-bold mb-1">${priority}</p><p class="text-xs">${title}</p>`;
+            board.prepend(card);
+            closeModal();
+            document.getElementById('task-title').value = '';
+        }
+
+        initTree();
     </script>
 </body>
 </html>
