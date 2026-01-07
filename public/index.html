@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QCBE MAX | SUPREME AUTHORITY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #02040a; color: white; overflow: hidden; font-family: sans-serif; }
+        .module-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .module-card:hover { border-color: #00FFA3; box-shadow: 0 0 20px rgba(0,255,163,0.1); }
+    </style>
+</head>
+<body class="flex h-screen">
+    <div class="w-24 border-r border-white/5 flex flex-col items-center py-10 gap-6 bg-black/50">
+        <div class="text-[#00FFA3] font-black text-xl mb-10">QCBE</div>
+        <button onclick="show('5')" class="w-12 h-12 rounded-xl bg-white/5 hover:bg-[#00FFA3] hover:text-black font-bold">5</button>
+        <button onclick="show('7')" class="w-12 h-12 rounded-xl bg-white/5 hover:bg-[#00FFA3] hover:text-black font-bold">7</button>
+        <button onclick="show('10')" class="w-12 h-12 rounded-xl bg-white/5 hover:bg-[#00FFA3] hover:text-black font-bold">10</button>
+        <button onclick="show('21')" class="w-12 h-12 rounded-xl bg-white/5 hover:bg-[#00FFA3] hover:text-black font-bold">21</button>
+        <button onclick="location.reload()" class="mt-auto p-4 text-gray-500 hover:text-white">↻</button>
+    </div>
+
+    <div class="flex-1 p-12">
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-4xl font-black italic text-[#00FFA3]">QCBE OS : MAX</h1>
+                <p class="text-xs text-gray-500 uppercase tracking-widest">Master: Mohammad Maynul Hasan</p>
+            </div>
+            <div id="status" class="px-6 py-2 border border-[#00FFA3]/30 rounded-full text-[#00FFA3] text-xs font-mono">STATUS: ONLINE</div>
+        </div>
+
+        <div id="display" class="module-card rounded-[3rem] p-20 flex flex-col justify-center items-center h-[70%]">
+            <h2 class="text-6xl font-black opacity-10 uppercase italic">Yusra Active</h2>
+            <p class="text-gray-600 mt-4">Select a module from the left to begin.</p>
+        </div>
+    </div>
+
+    <script>
+        const data = {
+            '5': { t: '5.0 Project Studio', d: '12 Active Cubes. Resource allocation at 88%.' },
+            '7': { t: '7.0 Finance Hub', d: 'Balance: $12,500.00. Transactions: Validated.' },
+            '10': { t: '10.0 Executive Intel', d: 'God Mode Active. System projecting 92% ROI.' },
+            '21': { t: '21.0 System Control', d: 'Security protocols updated. Encryption: AES-256.' }
+        };
+        function show(id) {
+            const m = data[id];
+            document.getElementById('display').innerHTML = `
+                <div class="w-full text-left">
+                    <h2 class="text-5xl font-black text-[#00FFA3] italic mb-6">${m.t}</h2>
+                    <p class="text-2xl text-white/70 max-w-2xl">${m.d}</p>
+                    <button class="mt-10 px-10 py-4 bg-[#00FFA3] text-black font-black rounded-2xl uppercase text-xs">Execute Command</button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
