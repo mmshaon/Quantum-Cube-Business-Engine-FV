@@ -1,68 +1,87 @@
-import React from 'react';
-import { QuantumProvider, useQuantum } from './context/QuantumContext';
-import VirtualWorld from './components/VirtualWorld';
-import ProjectStudio from './components/ProjectStudio';
-import StrategyStudio from './components/StrategyStudio';
-import FinanceModule from './components/FinanceModule';
-import AutomationDesigner from './components/AutomationDesigner';
-import ExecutiveIntelligence from './components/ExecutiveIntelligence';
-import GlobalCore from './components/GlobalCore';
-import DataEditor from './components/DataEditor';
-import SystemControl from './components/SystemControl';
+import React, { useState } from 'react';
 
-const QuantumConsole = () => {
-  const { isGodMode, setIsGodMode, activeModule, setActiveModule } = useQuantum();
+// Simplified All-in-One Modules
+const ProjectModule = () => <div style={{padding: '20px', border: '1px solid #00FFA3', borderRadius: '15px'}}><h3>5.0 Project Studio</h3><p>Status: All Cubes Active</p></div>;
+const StrategyModule = () => <div style={{padding: '20px', border: '1px solid #ff00ff', borderRadius: '15px'}}><h3>6.0 Strategy Engine</h3><p>Analysis: 92% Market Potential</p></div>;
+const FinanceModule = () => <div style={{padding: '20px', border: '1px solid #ffd700', borderRadius: '15px'}}><h3>7.0 Finance Hub</h3><p>Balance: $12,500.00</p></div>;
+const AutomationModule = () => <div style={{padding: '20px', border: '1px solid #00d4ff', borderRadius: '15px'}}><h3>9.0 Automation</h3><p>Tasks Running: 14</p></div>;
+const IntelligenceModule = () => <div style={{padding: '20px', border: '2px solid red', borderRadius: '15px'}}><h3>10.0 Executive Intel</h3><p>God Mode: Enabled</p></div>;
 
-  const renderContent = () => {
-    if (activeModule === "5.0") return <ProjectStudio isGodMode={isGodMode} />;
-    if (activeModule === "6.0") return <StrategyStudio isGodMode={isGodMode} />;
-    if (activeModule === "7.0") return <FinanceModule data={{current_balance: "12500", yusra_insight: "Normal"}} />;
-    if (activeModule === "9.0") return <AutomationDesigner isGodMode={isGodMode} />;
-    if (activeModule === "10.0") return <ExecutiveIntelligence isGodMode={isGodMode} />;
-    if (activeModule === "15.0") return <GlobalCore isGodMode={isGodMode} />;
-    if (activeModule === "16.0") return <DataEditor isGodMode={isGodMode} />;
-    if (activeModule === "21.0") return <SystemControl isGodMode={isGodMode} />;
-    return <VirtualWorld isGodMode={isGodMode} />;
-  };
+export default function App() {
+  const [active, setActive] = useState('MAIN');
+  const [god, setGod] = useState(false);
+
+  const modules = [
+    {id: '5.0', name: 'Project'},
+    {id: '6.0', name: 'Strategy'},
+    {id: '7.0', name: 'Finance'},
+    {id: '9.0', name: 'Automation'},
+    {id: '10.0', name: 'Intel'}
+  ];
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: isGodMode ? '#1a0000' : '#02040a', color: 'white', fontFamily: 'sans-serif' }}>
-      
+    <div style={{ 
+      backgroundColor: god ? '#1a0000' : '#02040a', 
+      color: 'white', 
+      minHeight: '100vh', 
+      display: 'flex',
+      fontFamily: 'sans-serif' 
+    }}>
       {/* SIDEBAR */}
-      <div style={{ width: '80px', borderRight: '1px solid #333', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 0', gap: '20px' }}>
-        <div style={{ color: '#00FFA3', fontWeight: 'bold' }}>QCBE</div>
-        {['5.0', '6.0', '7.0', '9.0', '10.0', '15.0', '16.0', '21.0'].map(m => (
+      <div style={{ width: '100px', borderRight: '1px solid #333', padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        <h2 style={{fontSize: '14px', color: '#00FFA3'}}>QCBE</h2>
+        {modules.map(m => (
           <button 
-            key={m} 
-            onClick={() => setActiveModule(m)}
-            style={{ 
-              width: '40px', height: '40px', borderRadius: '8px', 
-              background: activeModule === m ? '#00FFA3' : '#333',
-              color: activeModule === m ? 'black' : 'white',
-              cursor: 'pointer', border: 'none', fontSize: '10px', fontWeight: 'bold'
+            key={m.id} 
+            onClick={() => setActive(m.id)}
+            style={{
+              padding: '10px 5px',
+              backgroundColor: active === m.id ? '#00FFA3' : '#222',
+              color: active === m.id ? 'black' : 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '10px',
+              fontWeight: 'bold'
             }}
           >
-            {m.split('.')[0]}
+            {m.id}
           </button>
         ))}
-        <button onClick={() => setIsGodMode(!isGodMode)} style={{ marginTop: 'auto', padding: '10px', borderRadius: '50%', background: isGodMode ? 'red' : '#333', border: 'none', color: 'white' }}>
-          G
+        <button 
+          onClick={() => setGod(!god)}
+          style={{ marginTop: 'auto', padding: '10px', backgroundColor: god ? 'red' : '#444', border: 'none', borderRadius: '50%', color: 'white', cursor: 'pointer' }}
+        >
+          {god ? 'GOD' : 'OFF'}
         </button>
       </div>
 
-      {/* MAIN VIEW */}
-      <div style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
-        <header style={{ marginBottom: '30px', borderBottom: '1px solid #333', paddingBottom: '20px' }}>
-          <h1 style={{ margin: 0, color: isGodMode ? 'red' : '#00FFA3' }}>QCBE MAX ENGINE</h1>
-          <p style={{ fontSize: '12px', color: '#666' }}>Active Module: {activeModule}</p>
-        </header>
-        
-        <div style={{ background: 'rgba(255,255,255,0.02)', borderRadius: '20px', padding: '20px', minHeight: '400px' }}>
-          {renderContent()}
+      {/* CONTENT AREA */}
+      <div style={{ flex: 1, padding: '40px' }}>
+        <div style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1 style={{ margin: 0, letterSpacing: '-1px' }}>SYSTEM <span style={{color: '#00FFA3'}}>MAX</span></h1>
+            <p style={{fontSize: '10px', opacity: 0.5}}>CREATOR: MOHAMMAD MAYNUL HASAN</p>
+          </div>
+          <div style={{fontSize: '12px', background: '#222', padding: '5px 15px', borderRadius: '20px', border: '1px solid #333'}}>
+            LIVE_STATUS: <span style={{color: '#00FFA3'}}>READY</span>
+          </div>
+        </div>
+
+        <div style={{ backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '30px', padding: '30px', minHeight: '300px' }}>
+          {active === '5.0' && <ProjectModule />}
+          {active === '6.0' && <StrategyModule />}
+          {active === '7.0' && <FinanceModule />}
+          {active === '9.0' && <AutomationModule />}
+          {active === '10.0' && <IntelligenceModule />}
+          {active === 'MAIN' && (
+            <div style={{textAlign: 'center', paddingTop: '50px'}}>
+              <h2 style={{opacity: 0.2, fontSize: '40px'}}>YUSRA CORE ACTIVE</h2>
+              <p>Select a Module from Sidebar to Begin</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
-};
-
-export default () => <QuantumProvider><QuantumConsole /></QuantumProvider>;
+}
