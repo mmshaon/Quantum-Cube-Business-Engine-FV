@@ -4,13 +4,11 @@ const QuantumContext = createContext();
 
 export const QuantumProvider = ({ children }) => {
   const [isGodMode, setIsGodMode] = useState(false);
-  const [activeModule, setActiveModule] = useState("1.0");
-  const [systemLogs, setSystemLogs] = useState(["[INIT] Quantum Engine Started", "[OK] Yusra Logic Merged"]);
-
-  const logAction = (msg) => setSystemLogs(prev => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev.slice(0, 10)]);
+  const [activeModule, setActiveModule] = useState("VIRTUAL");
+  const [systemLogs, setSystemLogs] = useState(["[SYSTEM] Initialized QCBE-MAX"]);
 
   return (
-    <QuantumContext.Provider value={{ isGodMode, setIsGodMode, activeModule, setActiveModule, systemLogs, logAction }}>
+    <QuantumContext.Provider value={{ isGodMode, setIsGodMode, activeModule, setActiveModule, systemLogs }}>
       {children}
     </QuantumContext.Provider>
   );

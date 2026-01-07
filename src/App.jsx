@@ -1,117 +1,66 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import { QuantumProvider, useQuantum } from './context/QuantumContext';
-import { Cpu, Shield, Database, Layout, Loader2 } from 'lucide-react';
-
-// Lazy Loading Components for better performance
-const VirtualWorld = lazy(() => import('./components/VirtualWorld'));
-const VoiceInterface = lazy(() => import('./components/VoiceInterface'));
-const ProjectStudio = lazy(() => import('./components/ProjectStudio'));
-const StrategyStudio = lazy(() => import('./components/StrategyStudio'));
-const FinanceModule = lazy(() => import('./components/FinanceModule'));
-const AutomationDesigner = lazy(() => import('./components/AutomationDesigner'));
-const ExecutiveIntelligence = lazy(() => import('./components/ExecutiveIntelligence'));
-const GlobalCore = lazy(() => import('./components/GlobalCore'));
-const DataEditor = lazy(() => import('./components/DataEditor'));
-const SystemControl = lazy(() => import('./components/SystemControl'));
+import VirtualWorld from './components/VirtualWorld';
+import ProjectStudio from './components/ProjectStudio';
+import StrategyStudio from './components/StrategyStudio';
+import FinanceModule from './components/FinanceModule';
+import AutomationDesigner from './components/AutomationDesigner';
+import ExecutiveIntelligence from './components/ExecutiveIntelligence';
+import GlobalCore from './components/GlobalCore';
+import DataEditor from './components/DataEditor';
+import SystemControl from './components/SystemControl';
 
 const QuantumConsole = () => {
-  const { isGodMode, setIsGodMode, activeModule, setActiveModule, systemLogs } = useQuantum();
+  const { isGodMode, setIsGodMode, activeModule, setActiveModule } = useQuantum();
 
-  // মডিউল সিলেকশন লজিক
-  const renderActiveModule = () => {
-    switch (activeModule) {
-      case '5.0': return <ProjectStudio isGodMode={isGodMode} />;
-      case '6.0': return <StrategyStudio isGodMode={isGodMode} />;
-      case '7.0': return <FinanceModule data={{current_balance: "12,500", yusra_insight: "Optimized"}} />;
-      case '9.0': return <AutomationDesigner isGodMode={isGodMode} />;
-      case '10.0': return <ExecutiveIntelligence isGodMode={isGodMode} />;
-      case '15.0': return <GlobalCore isGodMode={isGodMode} />;
-      case '16.0': return <DataEditor isGodMode={isGodMode} />;
-      case '21.0': return <SystemControl isGodMode={isGodMode} />;
-      default: return <VirtualWorld isGodMode={isGodMode} />;
-    }
+  const renderContent = () => {
+    if (activeModule === "5.0") return <ProjectStudio isGodMode={isGodMode} />;
+    if (activeModule === "6.0") return <StrategyStudio isGodMode={isGodMode} />;
+    if (activeModule === "7.0") return <FinanceModule data={{current_balance: "12500", yusra_insight: "Normal"}} />;
+    if (activeModule === "9.0") return <AutomationDesigner isGodMode={isGodMode} />;
+    if (activeModule === "10.0") return <ExecutiveIntelligence isGodMode={isGodMode} />;
+    if (activeModule === "15.0") return <GlobalCore isGodMode={isGodMode} />;
+    if (activeModule === "16.0") return <DataEditor isGodMode={isGodMode} />;
+    if (activeModule === "21.0") return <SystemControl isGodMode={isGodMode} />;
+    return <VirtualWorld isGodMode={isGodMode} />;
   };
 
   return (
-    <div className={`min-h-screen flex transition-all duration-700 ${isGodMode ? 'bg-[#0a0000]' : 'bg-[#02040a]'} text-white font-sans overflow-hidden`}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: isGodMode ? '#1a0000' : '#02040a', color: 'white', fontFamily: 'sans-serif' }}>
       
-      {/* 🚀 LEFT SIDEBAR (1.0 - 24.0) */}
-      <aside className="w-20 bg-black/50 border-r border-white/5 flex flex-col items-center py-8 gap-8 backdrop-blur-xl z-50">
-        <div className="p-3 bg-[#00FFA3]/10 rounded-2xl border border-[#00FFA3]/20">
-          <Cpu className={isGodMode ? "text-red-500" : "text-[#00FFA3]"} size={24} />
-        </div>
-
-        <div className="flex-1 flex flex-col gap-4 overflow-y-auto no-scrollbar pb-10">
-          {['5.0', '6.0', '7.0', '9.0', '10.0', '15.0', '16.0', '21.0'].map((m) => (
-            <button
-              key={m}
-              onClick={() => setActiveModule(m)}
-              className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${
-                activeModule === m 
-                ? 'bg-[#00FFA3] text-black shadow-[0_0_20px_#00FFA3]' 
-                : 'bg-white/5 text-gray-500 hover:bg-white/10'
-              }`}
-            >
-              <span className="text-[10px] font-black">{m.split('.')[0]}</span>
-            </button>
-          ))}
-        </div>
-
-        <button 
-          onClick={() => setIsGodMode(!isGodMode)}
-          className={`p-4 rounded-full border-2 transition-all ${isGodMode ? 'border-red-500 shadow-[0_0_25px_red] bg-red-500/20' : 'border-white/10'}`}
-        >
-          <Shield size={20} className={isGodMode ? "text-red-500" : "text-gray-500"} />
+      {/* SIDEBAR */}
+      <div style={{ width: '80px', borderRight: '1px solid #333', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 0', gap: '20px' }}>
+        <div style={{ color: '#00FFA3', fontWeight: 'bold' }}>QCBE</div>
+        {['5.0', '6.0', '7.0', '9.0', '10.0', '15.0', '16.0', '21.0'].map(m => (
+          <button 
+            key={m} 
+            onClick={() => setActiveModule(m)}
+            style={{ 
+              width: '40px', height: '40px', borderRadius: '8px', 
+              background: activeModule === m ? '#00FFA3' : '#333',
+              color: activeModule === m ? 'black' : 'white',
+              cursor: 'pointer', border: 'none', fontSize: '10px', fontWeight: 'bold'
+            }}
+          >
+            {m.split('.')[0]}
+          </button>
+        ))}
+        <button onClick={() => setIsGodMode(!isGodMode)} style={{ marginTop: 'auto', padding: '10px', borderRadius: '50%', background: isGodMode ? 'red' : '#333', border: 'none', color: 'white' }}>
+          G
         </button>
-      </aside>
+      </div>
 
-      {/* 🖥️ MAIN VIEWPORT */}
-      <main className="flex-1 flex flex-col p-6 overflow-hidden relative">
-        <header className="flex justify-between items-center mb-6 border-b border-white/5 pb-6">
-          <div>
-            <h1 className={`text-3xl font-black tracking-tighter italic ${isGodMode ? 'text-red-500' : 'text-[#00FFA3]'}`}>
-              QCBE OS <span className="text-white opacity-20">MAX</span>
-            </h1>
-            <p className="text-[9px] text-gray-500 uppercase tracking-[0.4em] font-bold">Creator: Mohammad Maynul Hasan</p>
-          </div>
-          
-          <div className="flex items-center gap-6">
-             <Suspense fallback={<Loader2 className="animate-spin" />}>
-                <VoiceInterface isGodMode={isGodMode} />
-             </Suspense>
-             <div className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-mono text-gray-400">
-               SYS_STATUS: <span className="text-[#00FFA3]">STABLE</span>
-             </div>
-          </div>
+      {/* MAIN VIEW */}
+      <div style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
+        <header style={{ marginBottom: '30px', borderBottom: '1px solid #333', paddingBottom: '20px' }}>
+          <h1 style={{ margin: 0, color: isGodMode ? 'red' : '#00FFA3' }}>QCBE MAX ENGINE</h1>
+          <p style={{ fontSize: '12px', color: '#666' }}>Active Module: {activeModule}</p>
         </header>
-
-        {/* 🧩 DYNAMIC MODULE CONTAINER */}
-        <section className="flex-1 overflow-y-auto no-scrollbar rounded-[3rem] border border-white/5 bg-black/20 p-2">
-          <Suspense fallback={
-            <div className="h-full flex flex-col items-center justify-center gap-4 text-gray-500">
-              <Loader2 className="animate-spin text-[#00FFA3]" size={40} />
-              <p className="text-[10px] font-mono tracking-widest">YUSRA IS INITIALIZING MODULE {activeModule}...</p>
-            </div>
-          }>
-            {renderActiveModule()}
-          </Suspense>
-        </section>
-      </main>
-
-      {/* 📜 SYSTEM LOGS (Hidden on small screens) */}
-      <aside className="w-80 p-6 bg-black/30 border-l border-white/5 hidden xl:flex flex-col gap-6">
-        <div className="flex items-center gap-2 text-gray-400">
-          <Database size={14} />
-          <span className="text-[10px] font-black uppercase tracking-widest">System Logs</span>
+        
+        <div style={{ background: 'rgba(255,255,255,0.02)', borderRadius: '20px', padding: '20px', minHeight: '400px' }}>
+          {renderContent()}
         </div>
-        <div className="flex-1 overflow-y-auto space-y-3 font-mono text-[9px] opacity-40">
-          {systemLogs.map((log, i) => (
-            <div key={i} className={`p-2 rounded-lg border border-white/5 ${log.includes('[OK]') ? 'text-[#00FFA3]' : ''}`}>
-              {log}
-            </div>
-          ))}
-        </div>
-      </aside>
+      </div>
     </div>
   );
 };
