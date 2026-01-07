@@ -4,7 +4,8 @@ import VirtualWorld from './components/VirtualWorld';
 import StrategyStudio from './components/StrategyStudio';
 import AutomationDesigner from './components/AutomationDesigner';
 import ExecutiveIntelligence from './components/ExecutiveIntelligence';
-import GlobalCore from './components/VirtualWorld';
+import GlobalCore from './components/GlobalCore';
+import SystemControl from './components/VirtualWorld';
 import VoiceInterface from './components/VoiceInterface';
 import { LayoutGrid, Shield, Cpu, Activity, Database, Globe } from 'lucide-react';
 
